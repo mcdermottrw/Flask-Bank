@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+
+  <title>Sign Up</title>
+
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='styles/loginSignUpStyle.css') }}">
+</head>
+
+<body class="root">
+    <div class="formContainer">
+        <form action="/signup" method="post">
+            <label class="titleLabel">sign up</label>
+
+            <input class="inputTextbox" style="width: 33.5%" type="text" placeholder="first name" name="firstname"/>
+
+            <input class="inputTextbox" style="width: 33.5%" type="text" placeholder="last name" name="lastname"/>
+            <br>
+
+            <input class="inputTextbox" type="text" placeholder="username" name="username"/>
+            <br>
+
+            <input  class="inputTextbox" type="password" placeholder="password" name="password">
+            <br>
+
+            <button class="submitButton" type="submit">SIGN UP</button>
+            <br>
+
+            {% if error %}
+                <br>
+                <span style="color: red;">{{error}}</span>
+            {% endif %}
+
+            <span class="switchPages">already registered? <a href="login">login</a> </span>
+        </form>
+    </div>
+</body>
+
+<br>
+<footer>Website by Ryan McDermott, Wesley Tan, Alex Uctum, Kevin Skulski</footer>
+
+</html>

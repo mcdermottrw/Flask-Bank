@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>MICROLENDING</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/poolStyle.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/headerStyle.css') }}">
+</head>
+
+<div class="header">
+    <h1>MICROLENDING</h1>
+    <p>Banking</p>
+</div>
+
+<body class="root">
+
+    <table>
+        <td><a href="{{ url_for('main.login') }}">Login</a></td>
+
+        <td><a href="{{ url_for('main.signup') }}">Signup</a></td>
+    </table>
+</body>
+
+<br>
+<footer style="text-align:center;">Website by Ryan McDermott, Wesley Tan, Alex Uctum, Kevin Skulski</footer>
+
+</html>

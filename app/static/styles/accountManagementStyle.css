@@ -1,0 +1,47 @@
+.container {
+    width: 50%;
+    background-color: #F9F9F9;
+    margin: 10px auto auto auto;
+    padding: 10px;
+    box-shadow: 3px 3px 3px #3E3E3E;
+    border-radius: 10px;
+}
+
+.textbox {
+    outline: none;
+    width: 25%;
+    height: 50px;
+    background-color: #E1E1E1;
+    border: none;
+    margin-bottom: 10px;
+    padding-left: 10px;
+    font-size: 18px;
+}
+
+.test {
+    background-color: red;
+}
+
+h3 {
+    padding-left: 30px;
+}
+form {
+    padding-left: 30px;
+}
+
+.dropDown {
+    font-size: 18px;
+    background-color: #E1E1E1;
+    height: 50px;
+    width: 250px;
+    border: none;
+    outline: none;
+    padding-left: 10px;
+}
+
+option {
+    border: 1px solid gray;
+}
+option:nth-child(even) {
+    background-color:white;
+}

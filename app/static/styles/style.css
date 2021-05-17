@@ -1,0 +1,15 @@
+/* General */
+body {
+    font-family: Helvetica;
+    background-image: linear-gradient(to right, #2855FF, #7C97FF);
+}
+
+
+button {
+    background: #7C97FF;
+    width: 100px;
+    font-size: large;
+    height: 50px;
+    border: 1px solid black;
+    outline: none;
+}
