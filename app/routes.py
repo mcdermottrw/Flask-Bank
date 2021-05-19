@@ -250,6 +250,10 @@ def poolBrowser():
         # Set the chosenCategory variable to whatever the user chose from the drop down list
         chosenCategory = request.form.get("categoryList")
 
+        # Make sure the user actually selected one of the values
+        if chosenCategory is None:
+            chosenCategory = "All"
+
         # If the user selected "All", simply launch the webpage without filtering pools
         if chosenCategory == "All":
             return render_template("poolBrowser.html", chosenCategory=chosenCategory, categories=categories,
@@ -341,7 +345,7 @@ def requestFromPool():
         return redirect(url_for(".poolBrowser"))
 
     # Create a loan request in the database
-    usersName = user.firstname + " " + user.lastname
+    usersName = user.firstName + " " + user.lastName
     loanRequest = LoanRequest(amountRequested, user.id, usersName, bankAccount.id, pool.id, pool.name, pool.amount)
     db.session.add(loanRequest)
     db.session.commit()
@@ -364,18 +368,7 @@ def accountManagement():
     user = User.query.filter_by(id=session["user_id"]).first()
     bankAccount = BankAccount.query.filter_by(id=session["active_bank_account_id"]).first()
 
-    return render_template("accountManagement.html", user=user, bankAccount=bankAccount)
-
-
-# Form function for the accountManagement page
-# Switches the user's active bank account depending on what they choose from the bank account drop down list
-@main.route("/switchBankAccounts", methods=["GET", "POST"])
-@login_required
-def switchBankAccounts():
-    # Get the value from the account drop down list. The value contains the ID for each of the user's
-    # bank accounts in the database
-    session["active_bank_account_id"] = request.form.get("accountDropDown")
-    return redirect(url_for(".accountManagement"))
+    return render_template("accountManagement.html", user=user)
 
 
 # Form function for the accountManagement page
@@ -399,17 +392,40 @@ def addFundsToActiveBankAccount():
     return redirect(url_for(".accountManagement"))
 
 
+# Form function for the account page
+# Adds funds to the bank account that the user chooses from the drop down list. The amount added is input by the user.
+@main.route("/addFundsToBankAccount", methods=["POST"])
+def addFundsToBankAccount():
+    # Get the chosen bank account's id from the select element
+    bankAccountId = request.form.get("bankAccountSelect")
+    bankAccount = BankAccount.query.filter_by(id=bankAccountId).first()
+
+    # Get the amount the user wants to add from the input box
+    fundsToAdd = request.form.get("addFundsInput")
+
+    # Validate that the user entered a valid value, send error message if not
+    if not re.match(r'^[1-9]\d*(\.\d{1,2})?$', fundsToAdd):
+        flash("Please enter a valid number to make a request", "addFundsError")
+        return redirect(url_for(".accountManagement"))
+
+    # Add the amount to the user's bank account balance and update the database
+    bankAccount.micro_dollars += float(fundsToAdd)
+    db.session.commit()
+
+    return redirect(url_for(".accountManagement"))
+
+
 # Form function for the accountManagement page
 # - Creates a new bank account under the user's account
 @main.route("/createNewBankAccount", methods=["POST"])
 @login_required
 def createNewBankAccount():
     # Get account name from the form
-    accountName = request.form.get("account name")
+    accountName = request.form.get("bankAccountNameInput")
 
     # Give the user an error message if the textbox is empty
     if accountName == "":
-        flash("Please fill out all of the text boxes", "createBankAccountMissingFieldError")
+        flash("Please fill out the text box!", "createBankAccountMissingFieldError")
         return redirect(url_for(".accountManagement"))
 
     # Create new bank account object and commit it to the database
@@ -443,9 +459,9 @@ def changeUserInformation():
     # Check if password matches password found in database, then change the requested item
     if bcrypt.checkpw(password.encode("utf-8"), user.password):
         if infoToChange == "first name":
-            user.firstname = changeTo
+            user.firstName = changeTo
         elif infoToChange == "last name":
-            user.lastname = changeTo
+            user.lastName = changeTo
         elif infoToChange == "username":
             user.username = changeTo
         elif infoToChange == "password":

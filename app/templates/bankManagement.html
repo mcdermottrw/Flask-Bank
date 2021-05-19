@@ -6,25 +6,29 @@
 
     <title>Bank Management</title>
 
-    <link rel="stylesheet" href="{{ url_for('static', filename='styles/poolStyle.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/style.css') }}">
 </head>
 
 <body>
-    <!-- Header declaration -->
-    {% with user=user %}
-        {% include 'header.html' %}
-    {% endwith %}
+    <div class="outer-container">
+        <!-- HEADER DECLARATION -->
+        {% with user=user %}
+            {% include 'navigationBar.html' %}
+        {% endwith %}
 
-    <!-- Create new pools -->
-    <div class="container">
-        <h3>Create New Loan Pool</h3>
+        <!-- FORM TO CREATE NEW LOAN POOLS -->
+        <div class="inner-container">
+            <h3>Create New Loan Pool</h3>
 
-        <form action="/createNewPool" method="post">
-            <input class="poolTextbox" type="text" placeholder="pool name" name="pool name"/><br>
-            <input class="poolTextbox" type="text" placeholder="pool category" name="pool category"/><br>
-            <input class="poolTextbox" type="text" placeholder="starting amount" name="starting amount"/>
+            <form method="post" action="/createNewPool">
+                <input type="text" placeholder="pool name" name="poolNameInput"/>
+                <br>
+                <input type="text" placeholder="pool category" name="poolCategoryInput"/>
+                <br>
+                <input type="text" placeholder="starting amount" name="startingAmountInput"/>
 
-            <button class="userInfoButton" type="submit">submit</button>
+                <button type="submit">Submit</button>
+            </form>
 
             {% with errors = get_flashed_messages(category_filter=["createNewPoolError"]) %}
                 {% if errors %}
@@ -34,41 +38,38 @@
                     {% endfor %}
                 {% endif %}
             {% endwith %}
-        </form>
-    </div>
-
-    <!-- Approve/deny loan requests -->
-    {% for loanRequest in loanRequests %}
-        <div class="container">
-            <form method="post" style="width: 100%;">
-                <!-- Place needed info in hidden field -->
-                <input type="hidden" name="loanRequestId" value="{{ loanRequest.id }}">
-
-                <h3>Loan Request [ID: {{ loanRequest.id }}]</h3>
-                <hr>
-                <span><strong>{{ loanRequest.requester_name }}</strong> requested <strong>{{ "${:,.2f}".format(loanRequest.amount) }}</strong></span>
-                <br><br>
-                <span>from</span>
-                <br><br>
-                <span><strong>{{ loanRequest.pool_name }} - [{{ "${:,.2f}".format(loanRequest.pool_amount) }}]</strong></span>
-                <br><br>
-                <input type="text" name="interest rate" class="poolTextbox"  style="width: 30%;" placeholder="interest rate (defaults to 2%)"/>
-                <button class="approveButton" type="submit" formaction="approveLoanRequest">Approve</button>
-                <button class="denyButton" type="submit" formaction="denyLoanRequest">Deny</button>
-                {% with errors = get_flashed_messages(category_filter=["approveLoanRequestError"]) %}
-                    {% if errors %}
-                        {% for error in errors %}
-                            <br>
-                            <span style="color: red">{{ error }}</span>
-                        {% endfor %}
-                    {% endif %}
-                {% endwith %}
-            </form>
         </div>
-    {% endfor %}
-</body>
 
-<br>
-<footer style="text-align:center;">Website by Ryan McDermott, Wesley Tan, Alex Uctum, Kevin Skulski</footer>
+        <!-- FORMS TO APPROVE OR DENY LOAN REQUESTS -->
+        {% for loanRequest in loanRequests %}
+            <div class="inner-container">
+                <form method="post" >
+                    <!-- Place needed info in hidden field -->
+                    <h3>Loan Request</h3>
+                    <input type="hidden" name="loanRequestId" value="{{ loanRequest.id }}">
+
+                    <span>
+                        <strong>{{ loanRequest.requester_name }}</strong> requested <strong>{{ "${:,.2f}".format(loanRequest.amount) }}</strong></span>
+                    <br><br>
+                    <span>from</span>
+                    <br><br>
+                    <span><strong>{{ loanRequest.pool_name }} - [{{ "${:,.2f}".format(loanRequest.pool_amount) }}]</strong></span>
+                    <br><br>
+                    <input type="text" name="interest rate" class="poolTextbox"  style="width: 30%;" placeholder="interest rate (defaults to 2%)"/>
+                    <button class="approveButton" type="submit" formaction="approveLoanRequest">Approve</button>
+                    <button class="denyButton" type="submit" formaction="denyLoanRequest">Deny</button>
+                    {% with errors = get_flashed_messages(category_filter=["approveLoanRequestError"]) %}
+                        {% if errors %}
+                            {% for error in errors %}
+                                <br>
+                                <span style="color: red">{{ error }}</span>
+                            {% endfor %}
+                        {% endif %}
+                    {% endwith %}
+                </form>
+            </div>
+        {% endfor %}
+    </div>
+</body>
 
 </html>

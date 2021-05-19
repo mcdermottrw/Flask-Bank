@@ -5,6 +5,15 @@ body {
 }
 
 div {
+    width: 60%;
+    background-color: #DEDEDE;
+    margin: 10px auto auto auto;
+    padding: 10px 10px 10px 10px;
+    box-shadow: 3px 3px 3px #3E3E3E;
+    border-radius: 10px;
+}
+
+.container {
     width: 50%;
     background-color: #F9F9F9;
     margin: 10px auto auto auto;

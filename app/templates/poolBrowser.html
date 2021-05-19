@@ -3,72 +3,62 @@
 
 <head>
     <meta charset="UTF-8">
-
     <title>Pool Browser</title>
-
-    <link rel="stylesheet" href="{{ url_for('static', filename='styles/poolStyle.css') }}">
+    <link rel="stylesheet" href="{{url_for('static', filename='styles/style.css') }}">
 </head>
 
-<body class="root">
-    <!-- Header declaration -->
-    {% with user=user %}
-        {% include 'header.html' %}
-    {% endwith %}
-
-    <!-- Title and category chooser -->
-    <div class="titleDiv">
-        <span class="title">Pools</span>
-
-        <!-- Pass in a list of all categories found in the Pool table of the database -->
-        <form action="{{ url_for('main.poolBrowser') }}" method="post">
-            <select name="categoryList" class="categoryList">
-                <option disabled selected value> {{ chosenCategory }} </option>
-                <option value="All">All</option>
-                {% for category in categories %}
-                    <option value="{{ category }}">{{ category }}</option>
-                {% endfor %}
-            </select>
-            <button id="button1" type="submit">go</button>
-
-            <br>
-        </form>
-        <br><br><br>
-
-        {% with errors = get_flashed_messages() %}
-            {% if errors %}
-                {% for msg in errors %}
-                    <span style="color: red;">{{ msg }}</span>
-                {% endfor %}
-            {% endif %}
+<body>
+    <div class="outer-container">
+        <!-- Header declaration -->
+        {% with user=user %}
+            {% include 'navigationBar.html' %}
         {% endwith %}
-    </div>
 
-    <!-- Pass in a list of all pools found in the Pool table of the database -->
-    {% for pool in pools %}
-        <div class="poolContainer">
-            <span class="poolName">{{ pool.name }}</span>
-            <span class="poolCategory">{{ pool.category }}</span>
+        <div class="inner-container title-container">
+            <span class="title-label">Loan Pool Browser</span>
             <br>
+            <span class="category-label">Choose a Category</span>
 
-            <span class="poolAmount">{{ "${:,.2f}".format(pool.amount) }}</span>
-            <br>
+            <form action="/poolBrowser" method="post">
+                <select name="categoryList" class="category-list">
+                    <option value="All">All</option>
+                    {% for category in categories %}
+                        <option value="{{ category }}">{{ category }}</option>
+                    {% endfor %}
+                </select>
 
-            <form action="/contributeToPool" method="post" class="contribution">
-                <input type="hidden" name="poolId" value={{pool.id}}>
-                <input type="text" name="contribute"/>
-                <button type="submit">contribute</button>
+                <button type="submit">Go</button>
+                <br>
             </form>
 
-            <form action="/requestFromPool" method="post" class="request">
-                <input type="hidden" name="poolId" value={{pool.id}}>
-                <input type="text" name="request"/>
-                <button type="submit">request</button>
-            </form>
+            <br>
+
+            {% with errors = get_flashed_messages() %}
+                {% if errors %}
+                    {% for msg in errors %}
+                        <span style="color: red;">{{ msg }}</span>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
         </div>
-    {% endfor %}
-</body>
 
-<br>
-<footer>Website by Ryan McDermott, Wesley Tan, Alex Uctum, Kevin Skulski</footer>
+        <!-- Pass in a list of all pools found in the Pool table of the database -->
+        {% for pool in pools %}
+            <div class="inner-container">
+                <div class="name-and-category-container">
+                    <span class="pool-name-label">{{ pool.name }}</span>
+                    <br>
+                    <span class="pool-category-label">{{ pool.category }}</span>
+                </div>
+
+                <span class="pool-amount-label">{{ "${:,.2f}".format(pool.amount) }}</span>
+                <br>
+
+                <button type="submit" class="request-or-contribute-button">Request</button>
+                <button type="submit" class="request-or-contribute-button">Contribute</button>
+            </div>
+        {% endfor %}
+    </div>
+</body>
 
 </html>

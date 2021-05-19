@@ -4,58 +4,26 @@
 <head>
     <meta charset="UTF-8">
 
-    <title>Account Management</title>
+    <title>Account</title>
 
-    <link rel="stylesheet" href="{{ url_for('static', filename='styles/poolStyle.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/style.css') }}">
 </head>
 
 <body>
-    <!-- Header declaration -->
-    {% with user=user %}
-        {% include 'header.html' %}
-    {% endwith %}
+    <div class="outer-container">
+        <!-- HEADER DECLARATION -->
+        {% with user=user %}
+            {% include 'navigationBar.html' %}
+        {% endwith %}
 
-    <!-- Choose active bank account -->
-    <div>
-        <h3>Choose Active Bank Account</h3>
+        <!-- FORM TO CREATE NEW BANK ACCOUNT -->
+        <div class="inner-container">
+            <h3>Create New Bank Account</h3>
+            <form action="/createNewBankAccount" method="post">
+                <input type="text" name="bankAccountNameInput" placeholder="account name"/>
+                <button class="account-button" type="submit">Submit</button>
+            </form>
 
-        <form class="fullWidthForm" action="/switchBankAccounts" method="post">
-            <select class="accountManagementSelect" name="accountDropDown">
-                <option disabled selected value>{{ bankAccount.account_name }} - {{ "${:,.2f}".format(bankAccount.micro_dollars) }}</option>
-                {% for account in user.bank_accounts %}
-                    <option value="{{ account.id }}">{{ account.account_name }} - {{ "${:,.2f}".format(account.micro_dollars) }}</option>
-                {% endfor %}
-            </select>
-
-            <button type="submit">submit</button>
-        </form>
-    </div>
-
-    <!-- Add funds to active account -->
-    <div>
-        <h3>Add Funds to Your Account - [{{ bankAccount.account_name }} - {{ "${:,.2f}".format(bankAccount.micro_dollars) }}]</h3>
-
-        <form class="fullWidthForm" action="/addFundsToActiveBankAccount" method="post">
-            <input class="accountManagementInput" type="text" placeholder="add funds" name="add funds"/>
-            <button type="submit">submit</button>
-            {% with errors = get_flashed_messages(category_filter=["addFundsError"]) %}
-                {% if errors %}
-                    {% for error in errors %}
-                        <br>
-                        <span style="color:red;">{{ error }}</span>
-                    {% endfor %}
-                {% endif %}
-            {% endwith %}
-        </form>
-    </div>
-
-    <!-- Create new bank account section -->
-    <div>
-        <h3>Create New Bank Account</h3>
-
-        <form class="fullWidthForm" action="/createNewBankAccount" method="post">
-            <input class="accountManagementInput" type="text" name="account name" placeholder="account name"/>
-            <button type="submit">submit</button>
             {% with errors = get_flashed_messages(category_filter=["createBankAccountMissingFieldError"]) %}
                 {% if errors %}
                     {% for error in errors %}
@@ -64,34 +32,79 @@
                     {% endfor %}
                 {% endif %}
             {% endwith %}
-        </form>
-    </div>
+        </div>
 
-    <!-- Change user information section -->
-    <div>
-        <h3>Edit User Information</h3>
+        <!-- FORM TO ADD FUNDS TO USER'S BANK ACCOUNT -->
+        <div class="inner-container">
+            <h3>Add Funds to a Bank Account</h3>
 
-        <form class="fullWidthForm" action="/changeUserInformation" method="post">
-            <span>1) Choose which piece of info you would like to change</span>
-            <br><br>
-            <select class="accountManagementSelect" name="infoDropDown">
-                <option value="first name">First name</option>
-                <option value="last name">Last name</option>
-                <option value="username">Username</option>
-                <option value="password">Password</option>
-            </select>
-            <br><br>
+            <form method="post" action="/addFundsToBankAccount">
+                <select name="bankAccountSelect">
+                    {% for account in user.bank_accounts %}
+                        <option value="{{ account.id }}">{{ account.account_name }} - {{ "${:,.2f}".format(account.micro_dollars) }}</option>
+                    {% endfor %}
+                </select>
 
-            <span>2) Enter what you would like to change it to</span>
-            <br><br>
-            <input class="accountManagementInput" type="text" name="newInformation"/>
-            <br>
+                <br><br>
 
-            <span>3) Enter your password and submit</span>
-            <br><br>
-            <input class="accountManagementInput" type="password" name="password"/>
+                <input name="addFundsInput" type="text" placeholder="add funds" />
+                <button class="account-button" type="submit">Submit</button>
+            </form>
 
-            <button type="submit">submit</button>
+            {% with errors = get_flashed_messages(category_filter=["addFundsError"]) %}
+                {% if errors %}
+                    {% for error in errors %}
+                        <br>
+                        <span style="color:red;">{{ error }}</span>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+        </div>
+
+
+
+        <!-- FORM TO EDIT USER INFORMATION  -->
+        <div class="inner-container">
+            <h3>Edit Information</h3>
+
+            <form method="post" action="/editUserInformation">
+                <table>
+                    <tr>
+                        <td><span class="edit-user-info-span">First Name</span></td>
+                        <td><input name="firstNameInput" type="text" value="{{ user.firstName }}" /></td>
+                    </tr>
+                    <tr>
+                        <td><span class="edit-user-info-span">Last Name</span></td>
+                        <td><input name="lastNameInput" type="text" value="{{ user.lastName }}" /></td>
+                    </tr>
+                    <tr>
+                        <td><span class="edit-user-info-span">Username</span></td>
+                        <td width="80%"><input name="usernameInput" type="text" value="{{ user.username }}" /></td>
+                    </tr>
+                </table>
+
+                <hr>
+                <h3>Edit Password</h3>
+
+                <table>
+                    <tr>
+                        <td><span class="edit-user-info-span">Current Password</span></td>
+                        <td><input name="currentPasswordInput" type="password" /></td>
+                    </tr>
+                    <tr>
+                        <td><span class="edit-user-info-span">New Password</span></td>
+                        <td><input name="newPasswordInput" type="password" /></td>
+                    </tr>
+                    <tr>
+                        <td><span class="edit-user-info-span">Confirm Password</span></td>
+                        <td width="80%">
+                            <input name="confirmPasswordInput" type="password" />
+                            <button class="account-button" type="submit">Submit</button>
+                        </td>
+                    </tr>
+                </table>
+            </form>
+
             {% with errors = get_flashed_messages(category_filter=["editInfoError"]) %}
                 {% if errors %}
                     {% for error in errors %}
@@ -100,19 +113,17 @@
                     {% endfor %}
                 {% endif %}
             {% endwith %}
+
             {% with messages = get_flashed_messages(category_filter=["editInfoSuccess"]) %}
                 {% if messages %}
                     {% for message in messages %}
                         <br>
-                        <span>{{ message }}</span>
+                        <span style="color:green;">{{ message }}</span>
                     {% endfor %}
                 {% endif %}
             {% endwith %}
-        </form>
+        </div>
     </div>
 </body>
-
-<br>
-<footer>Website by Ryan McDermott, Wesley Tan, Alex Uctum, Kevin Skulski</footer>
 
 </html>

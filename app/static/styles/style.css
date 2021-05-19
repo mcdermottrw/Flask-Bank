@@ -1,15 +1,160 @@
-/* General */
+/* General (styling shared among all pages) ========================================================================= */
 body {
-    font-family: Helvetica;
-    background-image: linear-gradient(to right, #2855FF, #7C97FF);
+    font-family: Trebuchet MS;
+    background-image: linear-gradient(to right, #000428, #004E92);
 }
 
+.outer-container {
+    width: 50%;
+    background-color: #DEDEDE;
+    border-radius: 5px;
+    margin: 20px auto 20px auto;
+    padding: 0px 0px 20px 0px;
+}
+
+.inner-container {
+    width: 90%;
+    background-color: #F9F9F9;
+    padding: 10px 20px;
+    margin: 20px auto 20px auto;
+    border-radius: 5px;
+    box-shadow: 3px 3px 3px #3E3E3E;
+    overflow: hidden;
+}
 
 button {
-    background: #7C97FF;
-    width: 100px;
-    font-size: large;
+    background: #0B1E53;
+    color: white;
+    font-size: 18px;
     height: 50px;
+    width: 100px;
     border: 1px solid black;
-    outline: none;
+    border-radius: 5px;
 }
+button:hover {
+    background: #0D2670;
+}
+button:active {
+    background: #103190;
+}
+
+input {
+    outline: none;
+    height: 50px;
+    width: 238px;
+    background-color: #E1E1E1;
+    border: none;
+    margin-bottom: 10px;
+    padding-left: 10px;
+    font-size: 18px;
+    border-radius: 5px;
+}
+
+select {
+    background-color: #DEDEDE;
+    border: none;
+    outline: none;
+    font-size: 18px;
+    height: 51px;
+    width: 250px;
+    border-radius: 5px;
+    padding: 0px 5px;
+}
+option:nth-child(even) {
+    background-color: white;
+}
+
+/* Navigation Bar =================================================================================================== */
+.navigation-bar {
+    background-color: #F9F9F9;
+    border-radius: 5px 5px 0 0;
+    border-bottom: 1px solid black;
+    overflow: hidden;
+    height: 50px;
+    line-height: 50px;
+}
+
+.navigation-bar span {
+    font-size: 40px;
+    margin-left: 40px;
+}
+
+.navigation-bar div {
+    float: right;
+}
+
+.navigation-bar ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+.navigation-bar li {
+    display: inline;
+}
+
+.navigation-bar li a {
+    color: black;
+    text-align: center;
+    text-decoration: none;
+    padding: 0px 15px;
+    display: inline-block;
+}
+
+.navigation-bar li a:hover {
+    background-color: #DEDEDE;
+}
+
+/* Pool Browser Page ================================================================================================ */
+.inner-container.title-container {
+    text-align: center;
+}
+
+.title-label {
+    font-size: 48px;
+    display: inline-block;
+    padding-top: 10px;
+}
+
+.category-label {
+    font-size: 28px;
+    display: inline-block;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+.pool-name-label {
+    font-size: 48px;
+}
+
+.pool-category-label {
+    font-size: 18px;
+}
+
+.name-and-category-container {
+    display: inline-block;
+}
+
+.pool-amount-label {
+    font-size: 60px;
+    color: green;
+    display: inline-block;
+    float: right;
+}
+
+.request-or-contribute-button {
+    float: right;
+    margin-left: 10px;
+}
+
+/* Account Page ===================================================================================================== */
+.account-button {
+    float: right;
+}
+
+.edit-user-info-span {
+    font-size: 18px;
+    padding-right: 20px;
+}
+
+/* Bank Admin Page ================================================================================================== */

@@ -1,5 +1,3 @@
-import datetime
-
 from sqlalchemy.orm import relationship
 from database import db
 
@@ -17,11 +15,11 @@ class User(db.Model):
 
     # Defines and gives attributes to fields in the table
     id = db.Column(db.Integer, primary_key=True)  # SQLAlchemy requires primary keys
-    firstname = db.Column(db.String(100))
-    lastname = db.Column(db.String(100))
+    firstName = db.Column(db.String(100))
+    lastName = db.Column(db.String(100))
     username = db.Column(db.String(100), unique=True)  # Usernames must be unique
     password = db.Column(db.String(100))
-    isBankManager = db.Column(db.Integer)
+    isBankManager = db.Column(db.Integer)  # 0 is FALSE, 1 is TRUE
 
     # Defines a one-to-many relationship with the models specified in relationship()
     # - The relationship() method returns an array of all rows that contain a foreign key from this model
@@ -32,12 +30,11 @@ class User(db.Model):
     loan_requests = relationship("LoanRequest")
 
     # Standard constructor for the model
-    # - isBankManager is set to default -- the only way a user can be made a bank manager is by editing the
-    #                                    database directly via a database editor
-    # - Variables which refer to one to many relationships are set as empty lists by default
+    # - Users are not bank managers by default. The only way to make someone a manager is through the database directly.
+    # - Relationships are made empty by default.
     def __init__(self, firstname, lastname, username, password, isBankManager=0, bank_accounts=[], pool_contributions=[], loans=[], loan_requests=[]):
-        self.firstname = firstname
-        self.lastname = lastname
+        self.firstName = firstname
+        self.lastName = lastname
         self.username = username
         self.password = password
         self.isBankManager = isBankManager
@@ -119,11 +116,11 @@ class LoanRequest(db.Model):
     __tablename__ = "loan_request"
 
     id = db.Column(db.Integer, primary_key=True)
-    amount = db.Column(db.Float)
     user_id = db.Column(db.Integer, db.ForeignKey("user.id"))
-    requester_name = db.Column(db.String(100))
     account_id = db.Column(db.Integer, db.ForeignKey("bank_account.id"))
     pool_id = db.Column(db.Integer, db.ForeignKey("pool.id"))
+    amount = db.Column(db.Float)
+    requester_name = db.Column(db.String(100))
     pool_name = db.Column(db.String(100))
     pool_amount = db.Column(db.Float)
 
