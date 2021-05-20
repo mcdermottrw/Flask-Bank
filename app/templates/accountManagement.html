@@ -3,9 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-
     <title>Account</title>
-
     <link rel="stylesheet" href="{{ url_for('static', filename='styles/style.css') }}">
 </head>
 
@@ -20,7 +18,7 @@
         <div class="inner-container">
             <h3>Create New Bank Account</h3>
             <form action="/createNewBankAccount" method="post">
-                <input type="text" name="bankAccountNameInput" placeholder="account name"/>
+                <input name="bankAccountNameInput" type="text" placeholder="account name"/>
                 <button class="account-button" type="submit">Submit</button>
             </form>
 
@@ -28,7 +26,7 @@
                 {% if errors %}
                     {% for error in errors %}
                         <br>
-                        <span style="color:red;">{{ error }}</span>
+                        <span style="color: red;">{{ error }}</span>
                     {% endfor %}
                 {% endif %}
             {% endwith %}

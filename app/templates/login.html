@@ -3,25 +3,22 @@
 
 <head>
   <meta charset="utf-8">
-
   <title>Login</title>
-
-  <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='styles/loginSignUpStyle.css') }}">
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='styles/style.css') }}">
 </head>
 
+<body>
+    <div class="login-signup-container">
+        <form action="/login" method="post">
+            <label class="login-signup-label">Login</label>
 
-<body class="root">
-    <div class="formContainer">
-        <form action="" method="post">
-            <label class="titleLabel">login</label>
-
-            <input class="inputTextbox" type="text" placeholder="username" name="username"/>
+            <input class="login-signup-input" name="usernameInput" type="text" placeholder="username" />
             <br>
 
-            <input class="inputTextbox" type="password" placeholder="password" name="password">
+            <input class="login-signup-input" name="passwordInput" type="password" placeholder="password" />
             <br>
 
-            <button class="submitButton" type="submit">LOGIN</button>
+            <button class="login-signup-button" type="submit">LOGIN</button>
             <br>
 
             {% if error %}
@@ -29,12 +26,9 @@
                 <span style="color: red;">{{error}}</span>
             {% endif %}
 
-            <span class="switchPages">no account? <a href="signup">sign up</a> </span>
+            <span class="page-switch-span">No account? <a href="signup">Sign up</a> </span>
         </form>
     </div>
 </body>
-
-<br>
-<footer>Website by Ryan McDermott, Wesley Tan, Alex Uctum, Kevin Skulski</footer>
 
 </html>
