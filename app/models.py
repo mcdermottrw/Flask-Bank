@@ -1,5 +1,5 @@
+from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.orm import relationship
-from database import db
 
 
 '''
@@ -7,6 +7,8 @@ Models are a part of SQLAlchemy which allows us to create objects and convert th
 SQLite database.
 '''
 
+# Initialize database
+db = SQLAlchemy()
 
 # User Model - relates to "user" table in database
 class User(db.Model):

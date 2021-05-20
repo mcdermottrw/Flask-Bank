@@ -4,7 +4,7 @@ import time
 from flask import Blueprint, request, render_template, url_for, redirect, session, flash
 from functools import wraps
 
-from database import db
+from models import db
 from models import User, PoolContribution, LoanRequest, Loan
 from models import Pool
 from models import BankAccount
@@ -57,6 +57,7 @@ def bank_manager_required(f):
 
 # Retrieves and renders index.html whenever the server is accessed without a specific page defined
 @main.route("/")
+@main.route("/index")
 def index():
     if "logged_in" in session:
         return redirect(url_for(".dashboard"))

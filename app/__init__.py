@@ -1,7 +1,8 @@
 from flask import Flask, session
 
-from routes import main, poolBrowser
-from database import db
+from routes import main
+from models import db
+
 
 # Creates and configures the Flask object which controls the web app
 def create_app():
