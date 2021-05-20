@@ -110,7 +110,7 @@ option:nth-child(even) {
     text-align: center;
 }
 
-.title-label {
+.pool-title-label {
     font-size: 48px;
     display: inline-block;
     padding-top: 10px;
@@ -158,3 +158,39 @@ option:nth-child(even) {
 }
 
 /* Bank Admin Page ================================================================================================== */
+
+/* Login Page ======================================================================================================= */
+.login-signup-container {
+    width: 30%;
+    background-color: #F9F9F9;
+    text-align: center;
+    margin: 100px auto auto auto;
+    padding: 50px 10px 50px 10px;
+    box-shadow: 3px 3px 3px #3E3E3E;
+    border-radius: 10px;
+}
+
+.login-signup-label {
+    font-size: 24px;
+    display: block;
+    padding-bottom: 40px;
+}
+
+.login-signup-input {
+    width: 70%;
+}
+
+.login-signup-input.mini {
+    width: 33.5%;
+}
+
+.login-signup-button {
+    background-image: linear-gradient(to right, #000428, #004E92);
+    width: 72%;
+}
+
+.page-switch-span {
+    color: grey;
+    display: block;
+    margin-top: 50px;
+}

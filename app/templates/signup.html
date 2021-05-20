@@ -3,29 +3,27 @@
 
 <head>
   <meta charset="utf-8">
-
   <title>Sign Up</title>
-
-  <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='styles/loginSignUpStyle.css') }}">
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='styles/style.css') }}">
 </head>
 
-<body class="root">
-    <div class="formContainer">
+<body>
+    <div class="login-signup-container">
         <form action="/signup" method="post">
-            <label class="titleLabel">sign up</label>
+            <label class="login-signup-label">Sign Up</label>
 
-            <input class="inputTextbox" style="width: 33.5%" type="text" placeholder="first name" name="firstname"/>
+            <input class="login-signup-input mini" name="firstNameInput" type="text" placeholder="first name"/>
 
-            <input class="inputTextbox" style="width: 33.5%" type="text" placeholder="last name" name="lastname"/>
+            <input class="login-signup-input mini" name="lastNameInput" type="text" placeholder="last name"/>
             <br>
 
-            <input class="inputTextbox" type="text" placeholder="username" name="username"/>
+            <input class="login-signup-input" name="usernameInput" type="text" placeholder="username"/>
             <br>
 
-            <input  class="inputTextbox" type="password" placeholder="password" name="password">
+            <input class="login-signup-input" name="passwordInput" type="password" placeholder="password">
             <br>
 
-            <button class="submitButton" type="submit">SIGN UP</button>
+            <button class="login-signup-button" type="submit">SIGN UP</button>
             <br>
 
             {% if error %}
@@ -33,12 +31,9 @@
                 <span style="color: red;">{{error}}</span>
             {% endif %}
 
-            <span class="switchPages">already registered? <a href="login">login</a> </span>
+            <span class="page-switch-span">Already registered? <a href="login">Login</a> </span>
         </form>
     </div>
 </body>
-
-<br>
-<footer>Website by Ryan McDermott, Wesley Tan, Alex Uctum, Kevin Skulski</footer>
 
 </html>

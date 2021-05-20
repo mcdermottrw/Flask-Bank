@@ -84,10 +84,13 @@ def login():
 
     # If the user submits the form
     if request.method == "POST":
+        print("TEST")
         # Get the user's sign in information from the text boxes
-        username = request.form["username"]
-        password = request.form["password"]
+        username = request.form["usernameInput"]
+        password = request.form["passwordInput"]
 
+        print(username)
+        print(password)
         # If either of the text boxes were left empty, give the user an error message
         if username == "" or password == "":
             error = "Please fill out the required fields"
@@ -140,10 +143,10 @@ def signup():
     # If the user submits the form
     if request.method == "POST":
         # Gather all data needed and put it into the User model
-        firstname = request.form["firstname"]
-        lastname = request.form["lastname"]
-        username = request.form["username"]
-        password = request.form["password"]
+        firstname = request.form["firstNameInput"]
+        lastname = request.form["lastNameInput"]
+        username = request.form["usernameInput"]
+        password = request.form["passwordInput"]
 
         # Make sure each of the text boxes are filled with the required information
         # If not, give the user an error message
