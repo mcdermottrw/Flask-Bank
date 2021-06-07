@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Account</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/style.css') }}">
+</head>
+
+<body>
+    <div class="outer-container">
+        <!-- HEADER DECLARATION -->
+        {% with user=user %}
+            {% include 'navigation_bar.html' %}
+        {% endwith %}
+
+        <div class="inner-container center-aligned">
+            <span class="page-title-label">Account Management</span>
+        </div>
+
+        <!-- FORM TO CREATE NEW BANK ACCOUNT -->
+        <div class="inner-container">
+            <h3>Create New Bank Account</h3>
+            <form action="/create_new_bank_account" method="post">
+                <input name="bank_account_name_input" type="text" placeholder="account name"/>
+                <button class="right-aligned-button" type="submit">Submit</button>
+            </form>
+
+            <span style="color: red">
+                &nbsp;
+                {% with errors = get_flashed_messages(category_filter=["create_new_bank_account_error"]) %}
+                    {% if errors %}
+                        {% for error in errors %}
+                            {{ error }}
+                        {% endfor %}
+                    {% endif %}
+                {% endwith %}
+            </span>
+
+            <span style="color: green">
+                &nbsp;
+                {% with successes = get_flashed_messages(category_filter=["create_new_bank_account_success"]) %}
+                    {% if successes %}
+                        {% for success in successes %}
+                            {{ success }}
+                        {% endfor %}
+                    {% endif %}
+                {% endwith %}
+            </span>
+        </div>
+
+        <!-- FORM TO ADD FUNDS TO USER'S BANK ACCOUNT -->
+        <div class="inner-container">
+            <h3>Add Funds to a Bank Account</h3>
+
+            <form method="post" action="/add_funds_to_bank_account">
+                <select name="bank_account_select">
+                    {% for account in user.bank_accounts %}
+                        {% set account_number = account.account_number|string %}
+                        <option value="{{ account.id }}">{{ account.account_name }} - {{ account_number[6:11] }} ({{ "${:,.2f}".format(account.balance) }})</option>
+                    {% endfor %}
+                </select>
+
+                <br>
+
+                <input name="add_funds_input" type="text" placeholder="add funds" />
+                <button class="right-aligned-button" type="submit">Submit</button>
+            </form>
+
+            <span style="color: red">
+                &nbsp;
+                {% with errors = get_flashed_messages(category_filter=["add_funds_error"]) %}
+                    {% if errors %}
+                        {% for error in errors %}
+                            {{ error }}
+                        {% endfor %}
+                    {% endif %}
+                {% endwith %}
+            </span>
+
+            <span style="color: green">
+                &nbsp;
+                {% with successes = get_flashed_messages(category_filter=["add_funds_success"]) %}
+                    {% if successes %}
+                        {% for success in successes %}
+                            {{ success }}
+                        {% endfor %}
+                    {% endif %}
+                {% endwith %}
+            </span>
+        </div>
+
+
+
+        <!-- FORM TO EDIT USER INFORMATION  -->
+        <div class="inner-container">
+            <h3>Edit Information</h3>
+
+            <form method="post" action="/update_user_information">
+                <table class="account-edit-info-table" width="100%">
+                    <tr>
+                        <td><span class="edit-user-info-span">First Name</span></td>
+                        <td><input name="first_name_input" type="text" value="{{ user.first_name }}" /></td>
+                    </tr>
+                    <tr>
+                        <td><span class="edit-user-info-span">Last Name</span></td>
+                        <td><input name="last_name_input" type="text" value="{{ user.last_name }}" /></td>
+                    </tr>
+                    <tr>
+                        <td><span class="edit-user-info-span">Username</span></td>
+                        <td width="75%">
+                            <input name="username_input" type="text" value="{{ user.username }}" />
+                            <button class="right-aligned-button" type="submit">Update</button>
+                        </td>
+                    </tr>
+                </table>
+            </form>
+
+            <!-- ERROR MESSAGE -->
+            <span style="color: red">
+                &nbsp;
+                {% with errors = get_flashed_messages(category_filter=["update_user_information_error"]) %}
+                    {% if errors %}
+                        {% for error in errors %}
+                            {{ error }}
+                        {% endfor %}
+                    {% endif %}
+                {% endwith %}
+            </span>
+
+            <!-- SUCCESS MESSAGE -->
+            <span style="color: green">
+                &nbsp;
+                {% with successes = get_flashed_messages(category_filter=["update_user_information_success"]) %}
+                    {% if successes %}
+                        {% for success in successes %}
+                            {{ success }}
+                        {% endfor %}
+                    {% endif %}
+                {% endwith %}
+            </span>
+
+            <hr>
+            <h3>Edit Password</h3>
+
+            <form method="post" action="/update_user_password">
+                <table class="account-edit-info-table" width="100%">
+                    <tr>
+                        <td><span class="edit-user-info-span">Current Password</span></td>
+                        <td><input name="current_password_input" type="password" /></td>
+                    </tr>
+                    <tr>
+                        <td><span class="edit-user-info-span">New Password</span></td>
+                        <td><input name="new_password_input" type="password" /></td>
+                    </tr>
+                    <tr>
+                        <td><span class="edit-user-info-span">Confirm New Password</span></td>
+                        <td width="75%">
+                            <input name="confirm_new_password_input" type="password" />
+                            <button class="right-aligned-button" type="submit">Update</button>
+                        </td>
+                    </tr>
+                </table>
+            </form>
+
+            <!-- ERROR MESSAGE -->
+            <span style="color: red">
+                &nbsp;
+                {% with errors = get_flashed_messages(category_filter=["update_user_password_error"]) %}
+                    {% if errors %}
+                        {% for error in errors %}
+                            {{ error }}
+                        {% endfor %}
+                    {% endif %}
+                {% endwith %}
+            </span>
+
+            <!-- SUCCESS MESSAGE -->
+            <span style="color: green">
+                &nbsp;
+                {% with successes = get_flashed_messages(category_filter=["update_user_password_success"]) %}
+                    {% if successes %}
+                        {% for success in successes %}
+                            {{ success }}
+                        {% endfor %}
+                    {% endif %}
+                {% endwith %}
+            </span>
+        </div>
+    </div>
+</body>
+
+</html>

@@ -38,10 +38,14 @@ button:active {
     background: #103190;
 }
 
+.right-aligned-button {
+    float: right;
+}
+
 input {
     outline: none;
     height: 50px;
-    width: 238px;
+    width: 288px;
     background-color: #E1E1E1;
     border: none;
     margin-bottom: 10px;
@@ -56,13 +60,48 @@ select {
     outline: none;
     font-size: 18px;
     height: 51px;
-    width: 250px;
+    width: 300px;
     border-radius: 5px;
     padding: 0px 5px;
+    margin-bottom: 10px;
 }
 option:nth-child(even) {
     background-color: white;
 }
+
+.page-title-label {
+    font-size: 48px;
+    display: inline-block;
+}
+
+/* Index ============================================================================================================ */
+.outer-container.index {
+    margin-top: 100px;
+    padding-top: 20px;
+}
+
+.site-title {
+    font-size: 72px;
+    text-align: center;
+    border: 3px solid black;
+    padding: 30px;
+    margin-bottom: 10px;
+}
+
+.site-desc {
+    font-size: 20px;
+    text-align: center;
+}
+
+.button-table {
+    margin: 75px auto 75px auto;
+}
+
+.index-button {
+    background-image: linear-gradient(to right, #000428, #004E92);
+    width: 200px;
+}
+
 
 /* Navigation Bar =================================================================================================== */
 .navigation-bar {
@@ -106,28 +145,27 @@ option:nth-child(even) {
 }
 
 /* Pool Browser Page ================================================================================================ */
-.inner-container.title-container {
+.inner-container.center-aligned {
     text-align: center;
 }
 
-.pool-title-label {
+.pool-browser-title-span {
     font-size: 48px;
     display: inline-block;
-    padding-top: 10px;
 }
 
-.category-label {
+.pool-browser-choose-category-span {
     font-size: 28px;
     display: inline-block;
     padding-top: 10px;
     padding-bottom: 10px;
 }
 
-.pool-name-label {
+.pool-browser-pool-name-span {
     font-size: 48px;
 }
 
-.pool-category-label {
+.pool-browser-pool-category-span {
     font-size: 18px;
 }
 
@@ -135,32 +173,77 @@ option:nth-child(even) {
     display: inline-block;
 }
 
-.pool-amount-label {
+.pool-browser-pool-amount-span {
     font-size: 60px;
     color: green;
     display: inline-block;
     float: right;
 }
 
-.request-or-contribute-button {
-    float: right;
+.right-aligned-button.margin-left {
     margin-left: 10px;
 }
 
 /* Account Page ===================================================================================================== */
-.account-button {
-    float: right;
-}
-
 .edit-user-info-span {
     font-size: 18px;
     padding-right: 20px;
 }
 
+.account-edit-info-table td {
+    padding-bottom: 10px;
+}
+
 /* Bank Admin Page ================================================================================================== */
+.right-aligned-button.approve {
+    background-color: #0B530D;
+}
+.right-aligned-button.approve:hover {
+    background-color: #106F13;
+}
+
+.right-aligned-button.deny {
+    background-color: #530B0B;
+    margin-left: 10px;
+}
+.right-aligned-button.deny:hover {
+    background-color: #701111;
+}
+
+.view-button {
+    background: none;
+    color: blue;
+    font-size: 14px;
+    height: auto;
+    width: auto;
+    border: none;
+    border-radius: none;
+    text-decoration: underline;
+    cursor: pointer;
+}
+.view-button:hover {
+    background: none;
+}
+.view-button:active {
+    background: none;
+}
+
+.loan-request-table {
+    border: 1px solid black;
+    border-collapse: collapse;
+}
+.loan-request-table th {
+    background-color: #B0BAD6;
+    border: 1px solid black;
+    padding: 5px;
+}
+.loan-request-table td {
+    border: 1px solid black;
+    padding: 5px;
+}
 
 /* Login Page ======================================================================================================= */
-.login-signup-container {
+.inner-container.mini {
     width: 30%;
     background-color: #F9F9F9;
     text-align: center;
@@ -192,5 +275,12 @@ option:nth-child(even) {
 .page-switch-span {
     color: grey;
     display: block;
-    margin-top: 50px;
+    margin-top: 25px;
 }
+
+/* Request/Contribute Forms ========================================================================================= */
+.inner-container.form {
+    width: 50%;
+    margin-top: 100px;
+}
+

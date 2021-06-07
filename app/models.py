@@ -1,6 +1,9 @@
-from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy.orm import relationship
+import random
+import time
 
+from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy import Column, Integer, String, Boolean, Float, ForeignKey
+from sqlalchemy.orm import relationship
 
 '''
 Models are a part of SQLAlchemy which allows us to create objects and convert those instances to entries/rows in our
@@ -10,127 +13,140 @@ SQLite database.
 # Initialize database
 db = SQLAlchemy()
 
-# User Model - relates to "user" table in database
+
+# Connects to the "user" table in the database
 class User(db.Model):
-    # Defines the database table's name
+    # Defines the table name in the database
     __tablename__ = "user"
 
-    # Defines and gives attributes to fields in the table
-    id = db.Column(db.Integer, primary_key=True)  # SQLAlchemy requires primary keys
-    firstName = db.Column(db.String(100))
-    lastName = db.Column(db.String(100))
-    username = db.Column(db.String(100), unique=True)  # Usernames must be unique
-    password = db.Column(db.String(100))
-    isBankManager = db.Column(db.Integer)  # 0 is FALSE, 1 is TRUE
+    # Defines and gives attributes to columns in the table
+    id = Column(Integer, primary_key=True)
+    first_name = Column(String(100))
+    last_name = Column(String(100))
+    username = Column(String(100), unique=True)  # All usernames must be unique
+    password = Column(String(100))
+    is_bank_manager = Column(Boolean, default=False)
 
-    # Defines a one-to-many relationship with the models specified in relationship()
-    # - The relationship() method returns an array of all rows that contain a foreign key from this model
-    #   from the specified table
+    # Defines one-to-many relationships with other models/tables
+    # The models being referenced in relationship() are those that contain a foreign key which relates back to this
+    # model (typically user_id). This function is particularly useful because it will return an array of models which
+    # contain the foreign key that relates to the specific row of the user table
     bank_accounts = relationship("BankAccount")
     pool_contributions = relationship("PoolContribution")
     loans = relationship("Loan")
-    loan_requests = relationship("LoanRequest")
+    # Backref will allow the LoanRequest model instance to access a User model instance which the foreign key in the
+    # LoanRequest model relates to
+    loan_requests = relationship("LoanRequest", backref="user")
 
-    # Standard constructor for the model
-    # - Users are not bank managers by default. The only way to make someone a manager is through the database directly.
-    # - Relationships are made empty by default.
-    def __init__(self, firstname, lastname, username, password, isBankManager=0, bank_accounts=[], pool_contributions=[], loans=[], loan_requests=[]):
-        self.firstName = firstname
-        self.lastName = lastname
+    # Constructor that collects all of the data from the sign-up form which is all that is needed to create an entry
+    # within the table
+    def __init__(self, first_name, last_name, username, password):
+        self.first_name = first_name
+        self.last_name = last_name
         self.username = username
         self.password = password
-        self.isBankManager = isBankManager
-        self.bank_accounts = bank_accounts
-        self.pool_contributions = pool_contributions
-        self.loans = loans
-        self.loan_requests = loan_requests
 
 
-# BankAccount Model - relates to "bank_account" table in database
+# Connects to the "bank_account" table in the database
 class BankAccount(db.Model):
     __tablename__ = "bank_account"
 
-    id = db.Column(db.Integer, primary_key=True)
-    account_name = db.Column(db.String(100))
-    micro_dollars = db.Column(db.Float)
-    user_id = db.Column(db.Integer, db.ForeignKey("user.id"))  # Foreign key relates to a row in the user table
+    id = Column(Integer, primary_key=True)
+    user_id = Column(Integer, ForeignKey("user.id"))
+    account_name = Column(String(100))
+    account_number = Column(Integer, unique=True)
+    balance = Column(Float)
 
-    def __init__(self, account_name, micro_dollars, user_id):
+    loan_requests = relationship("LoanRequest", backref="bank_account")
+
+    def __init__(self, user_id, account_name, balance):
         self.account_name = account_name
-        self.micro_dollars = micro_dollars
         self.user_id = user_id
+        self.account_number = self.generateAccountNumber()
+        self.balance = balance
+
+    # Generates a random account number in the range 5000000000 to 5999999999
+    @staticmethod
+    def generateAccountNumber():
+        # This loop generates a random account number for the bank account until it is found to be unique
+        # to all others in the database
+        while True:
+            account_number = random.randint(5000000000, 5999999999)
+            if not BankAccount.query.filter_by(account_number=account_number).first():
+                break
+
+        return account_number
 
 
-# Pool Model - relates to "pool" table in database
+# Connects to the "pool" table in the database
 class Pool(db.Model):
     __tablename__ = "pool"
 
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(100))
-    category = db.Column(db.String(100))
-    amount = db.Column(db.Float)
-    pool_contributions = relationship("PoolContribution")
-    loan_requests = relationship("LoanRequest")
+    id = Column(Integer, primary_key=True)
+    name = Column(String(100))
+    category = Column(String(100))
+    amount = Column(Float)
 
-    def __init__(self, name, category, amount, pool_contributions=[], loan_requests=[]):
+    pool_contributions = relationship("PoolContribution", backref="pool")
+    loan_requests = relationship("LoanRequest", backref="pool")
+
+    def __init__(self, name, category, amount):
         self.name = name
         self.category = category
         self.amount = amount
-        self.pool_contributions = pool_contributions
-        self.loan_requests = loan_requests
 
 
-# PoolContribution Model - relates to "pool_contribution" table in database
+# Connects to the "pool_contribution" table in the database
 class PoolContribution(db.Model):
     __tablename__ = "pool_contribution"
 
-    id = db.Column(db.Integer, primary_key=True)
-    amount = db.Column(db.Float)
-    user_id = db.Column(db.Integer, db.ForeignKey("user.id"))
-    pool_id = db.Column(db.Integer, db.ForeignKey("pool.id"))
+    id = Column(Integer, primary_key=True)
+    user_id = Column(Integer, ForeignKey("user.id"))
+    pool_id = Column(Integer, ForeignKey("pool.id"))
+    amount = Column(Float)
 
-    def __init__(self, amount, user_id, pool_id):
-        self.amount = amount
+    def __init__(self, user_id, pool_id, amount):
         self.user_id = user_id
         self.pool_id = pool_id
+        self.amount = amount
 
 
-# Loan Model - relates to "loan" table in database
+# Connects to the "loan" table in the database
 class Loan(db.Model):
     __tablename__ = "loan"
 
-    id = db.Column(db.Integer, primary_key=True)
-    amount = db.Column(db.Float)
-    interest_rate = db.Column(db.Float)
-    date_given = db.Column(db.Integer)  # dates will be recorded using Unix Time (number of seconds since Jan 1, 1970)
-    user_id = db.Column(db.Integer, db.ForeignKey("user.id"))
+    id = Column(Integer, primary_key=True)
+    user_id = Column(Integer, ForeignKey("user.id"))
+    #
+    principal_amount = Column(Float)
+    amount_accrued = Column(Float, default=0)
+    amount_paid = Column(Float, default=0)
+    amount_due = Column(Float, default=principal_amount)
+    # All dates will be represented through Unix time
+    date_approved = Column(Integer, default=int(time.time()))
+    date_due = Column(Integer)
+    #
+    interest_rate = Column(Float)
 
-    def __init__(self, amount, interest_rate, date_given, user_id):
-        self.amount = amount
-        self.interest_rate = interest_rate
-        self.date_given = date_given
-        self.formatted_date_given = ""
+    def __init__(self, user_id, principal_amount, date_due, interest_rate):
         self.user_id = user_id
+        self.principal_amount = principal_amount
+        self.date_due = date_due
+        self.interest_rate = interest_rate
 
 
-# LoanRequest Model - relates to "loan_request in database
+# Connects to "loan_request" in the database
 class LoanRequest(db.Model):
     __tablename__ = "loan_request"
 
-    id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.Integer, db.ForeignKey("user.id"))
-    account_id = db.Column(db.Integer, db.ForeignKey("bank_account.id"))
-    pool_id = db.Column(db.Integer, db.ForeignKey("pool.id"))
-    amount = db.Column(db.Float)
-    requester_name = db.Column(db.String(100))
-    pool_name = db.Column(db.String(100))
-    pool_amount = db.Column(db.Float)
+    id = Column(Integer, primary_key=True)
+    user_id = Column(Integer, ForeignKey("user.id"))
+    account_id = Column(Integer, ForeignKey("bank_account.id"))
+    pool_id = Column(Integer, ForeignKey("pool.id"))
+    amount = Column(Float)
 
-    def __init__(self, amount, user_id, requester_name, account_id, pool_id, pool_name, pool_amount):
-        self.amount = amount
+    def __init__(self, user_id, account_id, pool_id, amount):
         self.user_id = user_id
-        self.requester_name = requester_name
         self.account_id = account_id
         self.pool_id = pool_id
-        self.pool_name = pool_name
-        self.pool_amount = pool_amount
+        self.amount = amount

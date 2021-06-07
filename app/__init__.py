@@ -1,6 +1,7 @@
 from flask import Flask, session
 
 from routes import main
+from forms import form
 from models import db
 
 
@@ -11,6 +12,7 @@ def create_app():
 
     # Register routing blueprint so that routes in other files (namely routes.py) can be recognized
     app.register_blueprint(main)
+    app.register_blueprint(form)
 
     # Configuration settings
     app.config["SECRET_KEY"] = "microlend2021"

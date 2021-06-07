@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Pool Browser</title>
+    <link rel="stylesheet" href="{{url_for('static', filename='styles/style.css') }}">
+</head>
+
+<body>
+    <div class="outer-container">
+        <!-- HEADER DECLARATION -->
+        {% with user=user %}
+            {% include 'navigation_bar.html' %}
+        {% endwith %}
+
+        <!-- CONTAINER FOR TITLE AND CATEGORY CHOOSER -->
+        <div class="inner-container center-aligned">
+            <br>
+            <span class="pool-browser-title-span">Loan Pool Browser</span>
+            <br>
+            <span class="pool-browser-choose-category-span">Choose a Category</span>
+
+            <form action="/pool_browser" method="post">
+                <select name="category_list" class="category-list">
+                    <option value="All">All</option>
+                    {% for category in categories %}
+                        <option value="{{ category }}">{{ category }}</option>
+                    {% endfor %}
+                </select>
+
+                <button type="submit">Go</button>
+            </form>
+
+            <br>
+
+            <!-- SUCCESS MESSAGES FROM FORMS WILL BE PLACED BELOW THE CATEGORY CHOOSER -->
+            <span style="color: green">
+                &nbsp;
+                {% with successes = get_flashed_messages(category_filter=["pool_form_success"]) %}
+                    {% if successes %}
+                        {% for success in successes %}
+                            {{ success }}
+                        {% endfor %}
+                    {% endif %}
+                {% endwith %}
+            </span>
+        </div>
+
+        <!-- USE A LIST OF LOAN POOLS TO CREATE MULTIPLE DIVS CONTAINING POOL INFORMATION AND OPTIONS -->
+        {% for pool in pools %}
+            <div class="inner-container">
+                <div class="name-and-category-container">
+                    <span class="pool-browser-pool-name-span">{{ pool.name }}</span>
+                    <br>
+                    <span class="pool-browser-pool-category-span">{{ pool.category }}</span>
+                </div>
+
+                <span class="pool-browser-pool-amount-span">{{ "${:,.2f}".format(pool.amount) }}</span>
+                <br>
+
+                <form method="post">
+                    <input name="pool_id" type="hidden" value="{{ pool.id }}"/>
+                    <button type="submit" class="right-aligned-button margin-left" formaction="/loan_request">Request</button>
+                    <button type="submit" class="right-aligned-button margin-left" formaction="/pool_contribution">Contribute</button>
+                </form>
+            </div>
+        {% endfor %}
+    </div>
+</body>
+
+</html>

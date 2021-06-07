@@ -14,12 +14,12 @@
             <ul>
                 <li><a href="{{ url_for('main.dashboard') }}">Dashboard</a></li>
 
-                <li><a href="{{ url_for('main.poolBrowser') }}">Loan Pools</a></li>
+                <li><a href="{{ url_for('main.pool_browser') }}">Loan Pools</a></li>
 
-                <li><a href="{{ url_for('main.accountManagement') }}">Account</a></li>
+                <li><a href="{{ url_for('main.account') }}">Account</a></li>
 
-                {% if user.isBankManager %}
-                    <li><a href="{{ url_for('main.bankManagement') }}">Bank Admin</a></li>
+                {% if user.is_bank_manager %}
+                    <li><a href="{{ url_for('main.bank_management') }}">Bank Admin</a></li>
                 {% endif %}
 
                 <li style="margin-right: 40px;"><a href="{{ url_for('main.logout') }}" style="color: red;">Logout</a></li>

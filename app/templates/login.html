@@ -8,25 +8,31 @@
 </head>
 
 <body>
-    <div class="login-signup-container">
-        <form action="/login" method="post">
+    <div class="inner-container mini">
+        <form action="/attempt_login" method="post">
             <label class="login-signup-label">Login</label>
 
-            <input class="login-signup-input" name="usernameInput" type="text" placeholder="username" />
+            <input class="login-signup-input" name="username_input" type="text" placeholder="username" />
             <br>
 
-            <input class="login-signup-input" name="passwordInput" type="password" placeholder="password" />
+            <input class="login-signup-input" name="password_input" type="password" placeholder="password" />
             <br>
 
             <button class="login-signup-button" type="submit">LOGIN</button>
-            <br>
+            <br><br>
 
-            {% if error %}
-                <br>
-                <span style="color: red;">{{error}}</span>
-            {% endif %}
+            <span style="color: red">
+                &nbsp;
+                {% with errors = get_flashed_messages(category_filter=["attempt_login_error"]) %}
+                    {% if errors %}
+                        {% for error in errors %}
+                            {{ error }}
+                        {% endfor %}
+                    {% endif %}
+                {% endwith %}
+            </span>
 
-            <span class="page-switch-span">No account? <a href="signup">Sign up</a> </span>
+            <span class="page-switch-span">No account? <a href="sign_up">Sign up</a> </span>
         </form>
     </div>
 </body>

@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Pool Contribution</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/style.css') }}">
+</head>
+
+<body>
+    <div class="inner-container form">
+        <h2>Contribute to Loan Pool</h2>
+        <hr>
+
+        <br>
+        <span class="pool-name-span">{{ pool.name }}</span>
+        <br>
+        <span class="pool-category-span">{{ pool.category }}</span>
+        <br>
+        <span class="pool-amount-span">{{ "${:,.2f}".format(pool.amount) }}</span>
+        <br><br>
+        <hr>
+
+        <form action="/contribute_to_pool" method="post">
+            <input name="pool_id" type="hidden" value="{{ pool.id }}"/>
+            <br>
+            <table width="100%">
+                <tr>
+                    <td>Bank Account to Use</td>
+                    <td>Amount to Contribute</td>
+                </tr>
+                <tr>
+                    <td>
+                        <select name="bank_account_select">
+                            {% for account in user.bank_accounts %}
+                                {% set account_number = account.account_number|string %}
+                                <option value="{{ account.id }}">{{ account.account_name }} - {{ account_number[6:11] }} ({{ "${:,.2f}".format(account.balance) }})</option>
+                            {% endfor %}
+                        </select>
+                    </td>
+                    <td>
+                        <input name="amount_to_contribute_input" type="text">
+                    </td>
+                    <td>
+                        <button class="right-aligned-button" type="submit">Submit</button>
+                    </td>
+                </tr>
+            </table>
+
+            <span style="color: red">
+                &nbsp;
+                {% with errors = get_flashed_messages(category_filter=["pool_form_error"]) %}
+                    {% if errors %}
+                        {% for error in errors %}
+                            {{ error }}
+                        {% endfor %}
+                    {% endif %}
+                {% endwith %}
+            </span>
+
+            <br>
+        </form>
+    </div>
+</body>
+
+</html>

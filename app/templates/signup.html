@@ -8,28 +8,34 @@
 </head>
 
 <body>
-    <div class="login-signup-container">
-        <form action="/signup" method="post">
+    <div class="inner-container mini">
+        <form action="/attempt_sign_up" method="post">
             <label class="login-signup-label">Sign Up</label>
 
-            <input class="login-signup-input mini" name="firstNameInput" type="text" placeholder="first name"/>
+            <input class="login-signup-input mini" name="first_name_input" type="text" placeholder="first name"/>
 
-            <input class="login-signup-input mini" name="lastNameInput" type="text" placeholder="last name"/>
+            <input class="login-signup-input mini" name="last_name_input" type="text" placeholder="last name"/>
             <br>
 
-            <input class="login-signup-input" name="usernameInput" type="text" placeholder="username"/>
+            <input class="login-signup-input" name="username_input" type="text" placeholder="username"/>
             <br>
 
-            <input class="login-signup-input" name="passwordInput" type="password" placeholder="password">
+            <input class="login-signup-input" name="password_input" type="password" placeholder="password">
             <br>
 
             <button class="login-signup-button" type="submit">SIGN UP</button>
-            <br>
+            <br><br>
 
-            {% if error %}
-                <br>
-                <span style="color: red;">{{error}}</span>
-            {% endif %}
+            <span style="color: red">
+                &nbsp;
+                {% with errors = get_flashed_messages(category_filter=["attempt_sign_up_error"]) %}
+                    {% if errors %}
+                        {% for error in errors %}
+                            {{ error }}
+                        {% endfor %}
+                    {% endif %}
+                {% endwith %}
+            </span>
 
             <span class="page-switch-span">Already registered? <a href="login">Login</a> </span>
         </form>

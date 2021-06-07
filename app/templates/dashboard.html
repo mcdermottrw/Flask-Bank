@@ -2,64 +2,22 @@
 <html lang="en">
 
 <head>
-  <meta charset="utf-8">
-
-  <title>Microlending Dashboard</title>
-
- <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='styles/poolStyle.css') }}">
+    <meta charset="utf-8">
+    <title>Dashboard</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='styles/style.css') }}">
 </head>
 
 <body class="root">
-    <!-- Header declaration -->
-    {% with user=user %}
-        {% include 'navigationBar.html' %}
-    {% endwith %}
+    <div class="outer-container">
+        <!-- Header declaration -->
+        {% with user=user %}
+            {% include 'navigation_bar.html' %}
+        {% endwith %}
 
-    <p style="text-align: center;">Welcome, {{user.firstname}}</p>
-
-    <table>
-        <tr>
-            <th>ACTIVE ACCOUNT: {{ bankAccount.account_name }}
-            </th>
-        </tr>
-
-        <tr>
-            <td>BALANCE: {{ "${:,.2f}".format(bankAccount.micro_dollars) }}</td>
-        </tr>
-
-    </table>
-
-    <table>
-        <tr>
-            <th>Pending Loans</th>
-        </tr>
-            {% for loan_request in loan_requests %}
-            <tr>
-                <td>{{ "${:,.2f}".format(loan_request.amount)}}</td>
-            </tr>
-            {% endfor %}
-    </table>
-
-    <table>
-        <tr>
-            <th colspan="2">Approved Loans</th>
-        </tr>
-
-        <tr>
-            <th>Amount Loaned</th>
-            <th>Date Given</th>
-        </tr>
-        {% for loan in loans %}
-        <tr>
-            <td>{{ "${:,.2f}".format(loan.amount) }}</td>
-            <td>{{ loan.format_date_given }}</td>
-        </tr>
-        {% endfor %}
-
-    </table>
+        <div class="inner-container">
+            <p>Welcome, {{user.first_name}}</p>
+        </div>
+    </div>
 </body>
-
-<br>
-<footer>Website by Ryan McDermott, Wesley Tan, Alex Uctum, Kevin Skulski</footer>
 
 </html>

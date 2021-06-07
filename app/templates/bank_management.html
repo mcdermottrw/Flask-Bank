@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Bank Management</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/style.css') }}">
+</head>
+
+<body>
+    <div class="outer-container">
+        <!-- HEADER DECLARATION -->
+        {% with user=user %}
+            {% include 'navigation_bar.html' %}
+        {% endwith %}
+
+        <div class="inner-container center-aligned">
+            <span class="page-title-label">Bank Management</span>
+        </div>
+
+        <!-- FORM TO CREATE NEW LOAN POOLS -->
+        <div class="inner-container">
+            <h3>Create New Loan Pool</h3>
+
+            <form method="post" action="/create_new_loan_pool">
+                <input type="text" placeholder="pool name" name="pool_name_input"/>
+                <br>
+                <input type="text" placeholder="pool category" name="pool_category_input"/>
+                <br>
+                <input type="text" placeholder="starting amount" name="starting_amount_input"/>
+
+                <button class="right-aligned-button" type="submit">Submit</button>
+            </form>
+
+            <span style="color: red">
+                &nbsp;
+                {% with errors = get_flashed_messages(category_filter=["create_new_pool_error"]) %}
+                    {% if errors %}
+                        {% for error in errors %}
+                            {{ error }}
+                        {% endfor %}
+                    {% endif %}
+                {% endwith %}
+            </span>
+
+            <span style="color: green">
+                &nbsp;
+                {% with successes = get_flashed_messages(category_filter=["create_new_pool_success"]) %}
+                    {% if successes %}
+                        {% for success in successes %}
+                            {{ success }}
+                        {% endfor %}
+                    {% endif %}
+                {% endwith %}
+            </span>
+        </div>
+
+        <div class="inner-container">
+            <h3>Manage Loan Requests</h3>
+            * hover over sections for more info
+            <br><br>
+
+            {% if loan_requests %}
+                <table class="loan-request-table" width="100%">
+                <tr>
+                    <th>Requester</th>
+                    <th>Bank Account</th>
+                    <th>Pool</th>
+                    <th>Amount</th>
+                    <th>Manage</th>
+                </tr>
+                    {% for loan_request in loan_requests %}
+                        <!-- Set variables first -->
+                        {% set user = loan_request.user %}
+                        {% set bank_account = loan_request.bank_account %}
+                        {% set pool = loan_request.pool %}
+
+                        <form method="post">
+                            <input name="loan_request_id" value="{{ loan_request.id }}" type="hidden">
+
+                            <tr>
+
+                                <td title="{{ user.first_name }} {{ user.last_name }} ({{ user.username }})">
+                                    {{ user.first_name }} {{ user.last_name }}
+                                </td>
+
+                                <td title="{{ bank_account.account_name }} - ({{ bank_account.account_number }}) / {{ '${:,.2f}'.format(bank_account.balance) }}">
+                                    {{ bank_account.account_name }} - [{{ bank_account.account_number }}]
+                                </td>
+
+                                <td title="{{ pool.name }} - ({{ pool.category }}) / {{ '${:,.2f}'.format(pool.amount) }}">
+                                    {{ pool.name }}
+                                </td>
+
+                                <td>
+                                    {{ "${:,.2f}".format(loan_request.amount) }}
+                                </td>
+
+                                <td style="text-align: center">
+                                    <button title="Approve" formaction="/approve_loan" class="view-button" type="submit">&#10004;</button>
+                                    <button title="Deny" formaction="/deny_loan_request" class="view-button" type="submit">&#10006;</button>
+                                </td>
+                            </tr>
+                        </form>
+                    {% endfor %}
+            </table>
+            {% else %}
+                <span>There are no loan requests at this time!</span>
+            {% endif %}
+        </div>
+    </div>
+</body>
+
+</html>

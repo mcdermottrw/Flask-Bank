@@ -3,26 +3,31 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>MICROLENDING</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='styles/poolStyle.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='styles/headerStyle.css') }}">
+    <title>FlaskBank</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/style.css') }}">
 </head>
 
-<div class="header">
-    <h1>MICROLENDING</h1>
-    <p>Banking</p>
-</div>
+<body>
+    <div class="outer-container index">
+        <div class="inner-container">
+            <h1 class="site-title">FlaskBank</h1>
+            <p class="site-desc">- A banking / loaning simulator created using Flask -</p>
 
-<body class="root">
+            <table class="button-table">
+                <td>
+                    <a href="{{ url_for('main.login') }}">
+                        <button class="index-button">LOGIN</button>
+                    </a>
+                </td>
 
-    <table>
-        <td><a href="{{ url_for('main.login') }}">Login</a></td>
-
-        <td><a href="{{ url_for('main.signup') }}">Signup</a></td>
-    </table>
+                <td>
+                    <a href="{{ url_for('main.sign_up') }}">
+                        <button class="index-button">SIGN-UP</button>
+                    </a>
+                </td>
+            </table>
+        </div>
+    </div>
 </body>
-
-<br>
-<footer style="text-align:center;">Website by Ryan McDermott, Wesley Tan, Alex Uctum, Kevin Skulski</footer>
 
 </html>
