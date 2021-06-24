@@ -7,14 +7,71 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='styles/style.css') }}">
 </head>
 
+<!-- Set shortened variables beforehand for ease of use -->
+{% set user = loan_request.user %}
+{% set bank_account = loan_request.bank_account %}
+{% set pool = loan_request.pool %}
+
 <body>
     <div class="inner-container form">
         <h2>Approve Loan Request</h2>
         <hr>
 
+        <!-- This table will hold all information relating to the loan request at hand -->
+        <table class="loan-info-table">
+            <tr>
+                <th>Requester Info</th>
+                <th>Amount Requested</th>
+            </tr>
+            <tr>
+                <!-- Requester Info -->
+                <td>
+                    <span>{{ user.first_name }} {{ user.last_name }}</span>
+                    <br>
+                    <span>{{ user.username }}</span>
+                </td>
+                <!-- Amount Requested -->
+                <td>
+                    <span>{{ "${:,.2f}".format(loan_request.amount) }}</span>
+                </td>
+            </tr>
+            <tr>
+                <th>Bank Account Info</th>
+                <th>Loan Pool Info</th>
+            </tr>
+            <tr>
+                <!-- Information about the bank account the user requested the funds to be sent to -->
+                <td>
+                    <span>{{ bank_account.account_name }}</span>
+                    <br>
+                    <span>{{ bank_account.account_number }}</span>
+                    <br>
+                    <span>{{ "${:,.2f}".format(bank_account.balance) }}</span>
+                </td>
+                <!-- Information about the pool that the user requested from -->
+                <td>
+                    <span>{{ pool.name }}</span>
+                    <br>
+                    <span>{{ pool.category }}</span>
+                    <br>
+                    <span>{{ "${:,.2f}".format(pool.amount) }}</span>
+            </tr>
+        </table>
+
+        <hr>
+
         <br>
+        <!-- Text box for the bank admin to enter the interest rate and date input for the loan due date -->
+        <form action="/approve_loan_request" method="post">
+            <input name="loan_request_id" type="hidden" value="{{ loan_request.id }}">
+            <input name="pool_id" type="hidden" value="{{ pool.id }}">
 
+            <input class="approve-loan-input" name="interest_rate_input" type="text" placeholder="interest rate (default 2%)">
+            <input class="approve-loan-input" name="due_date_input" type="date" placeholder="date due">
 
+            <button class="right-aligned-button" type="submit">Approve</button>
+        </form>
+        <br>
     </div>
 </body>
 

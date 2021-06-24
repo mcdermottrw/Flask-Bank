@@ -11,11 +11,11 @@
     <div class="outer-container">
         <!-- HEADER DECLARATION -->
         {% with user=user %}
-            {% include 'navigation_bar.html' %}
+            {% include 'header_nav.html' %}
         {% endwith %}
 
         <div class="inner-container center-aligned">
-            <span class="page-title-label">Account Management</span>
+            <span class="page-title-label">- Account Management -</span>
         </div>
 
         <!-- FORM TO CREATE NEW BANK ACCOUNT -->
@@ -54,7 +54,7 @@
             <h3>Add Funds to a Bank Account</h3>
 
             <form method="post" action="/add_funds_to_bank_account">
-                <select name="bank_account_select">
+                <select class="bottom-margin" name="bank_account_select">
                     {% for account in user.bank_accounts %}
                         {% set account_number = account.account_number|string %}
                         <option value="{{ account.id }}">{{ account.account_name }} - {{ account_number[6:11] }} ({{ "${:,.2f}".format(account.balance) }})</option>

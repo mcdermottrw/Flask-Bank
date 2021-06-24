@@ -9,29 +9,30 @@
 
 <body>
     <div class="outer-container">
-        <!-- HEADER DECLARATION -->
+        <!-- Header declaration -->
         {% with user=user %}
-            {% include 'navigation_bar.html' %}
+            {% include 'header_nav.html' %}
         {% endwith %}
 
+        <!-- Title label -->
         <div class="inner-container center-aligned">
-            <span class="page-title-label">Bank Management</span>
+            <span class="page-title-label">- Bank Management -</span>
         </div>
 
-        <!-- FORM TO CREATE NEW LOAN POOLS -->
         <div class="inner-container">
             <h3>Create New Loan Pool</h3>
-
+            <!-- Form to create new loan pools -->
             <form method="post" action="/create_new_loan_pool">
-                <input type="text" placeholder="pool name" name="pool_name_input"/>
+                <input class="bottom-margin" type="text" placeholder="pool name" name="pool_name_input"/>
                 <br>
-                <input type="text" placeholder="pool category" name="pool_category_input"/>
+                <input class="bottom-margin" type="text" placeholder="pool category" name="pool_category_input"/>
                 <br>
-                <input type="text" placeholder="starting amount" name="starting_amount_input"/>
+                <input class="bottom-margin" type="text" placeholder="starting amount" name="starting_amount_input"/>
 
                 <button class="right-aligned-button" type="submit">Submit</button>
             </form>
 
+            <!-- Error messages appear right below the category chooser-->
             <span style="color: red">
                 &nbsp;
                 {% with errors = get_flashed_messages(category_filter=["create_new_pool_error"]) %}
@@ -57,10 +58,11 @@
 
         <div class="inner-container">
             <h3>Manage Loan Requests</h3>
-            * hover over sections for more info
-            <br><br>
 
             {% if loan_requests %}
+                * hover over sections for more info
+                <br><br>
+
                 <table class="loan-request-table" width="100%">
                 <tr>
                     <th>Requester</th>

@@ -121,14 +121,14 @@ class Loan(db.Model):
     principal_amount = Column(Float)
     amount_accrued = Column(Float, default=0)
     amount_paid = Column(Float, default=0)
-    amount_due = Column(Float, default=principal_amount)
+    amount_due = Column(Float)
     # All dates will be represented through Unix time
     date_approved = Column(Integer, default=int(time.time()))
     date_due = Column(Integer)
     #
     interest_rate = Column(Float)
 
-    def __init__(self, user_id, principal_amount, date_due, interest_rate):
+    def __init__(self, user_id, principal_amount, amount_due, date_due, interest_rate):
         self.user_id = user_id
         self.principal_amount = principal_amount
         self.date_due = date_due

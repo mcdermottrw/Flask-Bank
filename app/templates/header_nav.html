@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/style.css') }}">
+</head>
+
+<body>
+    <ul class="navigation-bar">
+        <li class="navigation-bar-title">FlaskBank</li>
+
+        <li><a href="{{ url_for('main.dashboard') }}">Dashboard</a></li>
+
+        <li><a href="{{ url_for('main.pool_browser') }}">Loan Pools</a></li>
+
+        <li><a href="{{ url_for('main.account') }}">Account</a></li>
+
+        {% if user.is_bank_manager %}
+            <li><a href="{{ url_for('main.bank_management') }}">Bank Admin</a></li>
+        {% endif %}
+
+        <li><a class="navigation-bar-logout-a" href="{{ url_for('main.logout') }}">Logout</a></li>
+    </ul>
+</body>
+
+</html>

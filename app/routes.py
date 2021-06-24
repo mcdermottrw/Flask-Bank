@@ -53,6 +53,7 @@ def adminify():
     else:
         return render_template("index.html")
 
+
 # If the user navigates to either "/" or "/index" and they are not logged in, they will be presented "index.html"
 # If the user is already logged in, they will be redirected to the dashboard
 @main.route("/")
@@ -103,26 +104,27 @@ def dashboard():
     user = User.query.filter_by(id=session["user_id"]).first()
 
     # For each loan taken out by the user, we will update the amount accrued and date last updated
-    for loan in user.loans:
-        # Determine the number of days since the loan was approved
-        approval_date = loan.date_approved
-        current_date = int(time.time())
-        seconds_since_approved = current_date - approval_date
-        days_since_approved = math.floor(seconds_since_approved / 86400)
+    if user.loans:
+        for loan in user.loans:
+            # Determine the number of days since the loan was approved
+            approval_date = loan.date_approved
+            current_date = int(time.time())
+            seconds_since_approved = current_date - approval_date
+            days_since_approved = math.floor(seconds_since_approved / 86400)
 
-        # Calculate the interest that has accrued since the loan was approved (based on principal amount)
-        daily_interest_rate = (loan.interest_rate / 365) / 100
-        daily_interest = loan.principal_amount * daily_interest_rate  # 6.85ish
-        interest_since_approval = daily_interest * days_since_approved  # 59,403.20
+            # Calculate the interest that has accrued since the loan was approved (based on principal amount)
+            daily_interest_rate = (loan.interest_rate / 365) / 100
+            daily_interest = loan.principal_amount * daily_interest_rate
+            interest_since_approval = daily_interest * days_since_approved
 
-        # Subtract the amount that has already been accrued according to the database to get the interest since the
-        # user's last visit
-        interest = interest_since_approval - loan.amount_accrued
+            # Subtract the amount that has already been accrued according to the database to get the interest since the
+            # user's last visit
+            interest = interest_since_approval - loan.amount_accrued
 
-        # Update the loan in the database so that it can also be reflected on the page
-        loan.amount_accrued += interest
-        loan.amount_due = (loan.principal_amount + loan.amount_accrued) - loan.amount_paid
-        db.session.commit()
+            # Update the loan in the database so that it can also be reflected on the page
+            loan.amount_accrued += interest
+            loan.amount_due = (loan.principal_amount + loan.amount_accrued) - loan.amount_paid
+            db.session.commit()
 
     return render_template("dashboard.html", user=user)
 

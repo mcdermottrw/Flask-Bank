@@ -1,27 +1,28 @@
-/* General (styling shared among all pages) ========================================================================= */
+/* === CSS DIRECTORY ===
+
+   1.  GENERAL
+   2.  NAVIGATION BAR
+   3.  INDEX/HOME
+   4.  LOGIN/SIGN-UP SETTINGS
+   5.  DASHBOARD
+   6.  POOL BROWSER
+   7.  ACCOUNT MANAGEMENT
+   8.  BANK ADMIN
+   9.  CONTRIBUTION/REQUEST FORMS
+   10. APPROVAL FORM
+
+  ====================== */
+
+
+/* === GENERAL SETTINGS === */
+
+/* Font setting and background for every page of the site */
 body {
     font-family: Trebuchet MS;
     background-image: linear-gradient(to right, #000428, #004E92);
 }
 
-.outer-container {
-    width: 50%;
-    background-color: #DEDEDE;
-    border-radius: 5px;
-    margin: 20px auto 20px auto;
-    padding: 0px 0px 20px 0px;
-}
-
-.inner-container {
-    width: 90%;
-    background-color: #F9F9F9;
-    padding: 10px 20px;
-    margin: 20px auto 20px auto;
-    border-radius: 5px;
-    box-shadow: 3px 3px 3px #3E3E3E;
-    overflow: hidden;
-}
-
+/* Standard button for the site */
 button {
     background: #0B1E53;
     color: white;
@@ -38,22 +39,19 @@ button:active {
     background: #103190;
 }
 
-.right-aligned-button {
-    float: right;
-}
-
+/* Standard text box for the site */
 input {
     outline: none;
     height: 50px;
     width: 288px;
     background-color: #E1E1E1;
     border: none;
-    margin-bottom: 10px;
     padding-left: 10px;
     font-size: 18px;
     border-radius: 5px;
 }
 
+/* Standard drop down list for the site */
 select {
     background-color: #DEDEDE;
     border: none;
@@ -63,18 +61,89 @@ select {
     width: 300px;
     border-radius: 5px;
     padding: 0px 5px;
-    margin-bottom: 10px;
 }
 option:nth-child(even) {
     background-color: white;
 }
 
+/* Used to contain inner containers vertically */
+.outer-container {
+    width: 50%;
+    background-color: #DEDEDE;
+    border-radius: 5px;
+    margin: 20px auto 20px auto;
+    padding: 0px 0px 20px 0px;
+}
+
+/* Used to contain small sections of content - allows for things to be broken up into more digestable pieces */
+.inner-container {
+    width: 90%;
+    background-color: #F9F9F9;
+    padding: 10px 20px;
+    margin: 20px auto 20px auto;
+    border-radius: 5px;
+    box-shadow: 3px 3px 3px #3E3E3E;
+    overflow: hidden;
+}
+
+/* Used for the title of each page found on the navigation bar */
 .page-title-label {
-    font-size: 48px;
+    font-size: 36px;
+    margin: 10px 0px;
     display: inline-block;
 }
 
-/* Index ============================================================================================================ */
+/* Used for all buttons that must be positioned to the right */
+.right-aligned-button {
+    float: right;
+}
+
+/* Many selects and inputs need some margin underneath so that they are not on top of other selects/inputs */
+.bottom-margin {
+    margin-bottom: 10px;
+}
+
+
+
+/* === NAVIGATION BAR/HEADER SETTINGS === */
+.navigation-bar {
+    background-color: #F9F9F9;
+    border-radius: 5px 5px 0 0;
+    border-bottom: 1px solid black;
+    text-align: right;
+    padding-left: 15px;
+}
+
+.navigation-bar li {
+    display: inline;
+    line-height: 50px;
+}
+
+.navigation-bar li a {
+    text-decoration: none;
+    padding: 0px 15px;
+    display: inline-block;
+    height: 50px;
+    color: black;
+}
+.navigation-bar li a:hover {
+    background-color: #DEDEDE;
+}
+
+.navigation-bar-title {
+    float: left;
+    font-size: 40px;
+}
+
+.navigation-bar-logout-a {
+    color: red !important;
+    padding-right: 40px;
+    border-radius: 0 5px 0 0;
+}
+
+
+
+/* === INDEX/HOME SETTINGS === */
 .outer-container.index {
     margin-top: 100px;
     padding-top: 20px;
@@ -88,7 +157,7 @@ option:nth-child(even) {
     margin-bottom: 10px;
 }
 
-.site-desc {
+.site-description {
     font-size: 20px;
     text-align: center;
 }
@@ -103,88 +172,89 @@ option:nth-child(even) {
 }
 
 
-/* Navigation Bar =================================================================================================== */
-.navigation-bar {
+
+/* === LOGIN/SIGN-UP SETTINGS === */
+.inner-container.mini {
+    width: 30%;
     background-color: #F9F9F9;
-    border-radius: 5px 5px 0 0;
-    border-bottom: 1px solid black;
-    overflow: hidden;
-    height: 50px;
-    line-height: 50px;
-}
-
-.navigation-bar span {
-    font-size: 40px;
-    margin-left: 40px;
-}
-
-.navigation-bar div {
-    float: right;
-}
-
-.navigation-bar ul {
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
-}
-
-.navigation-bar li {
-    display: inline;
-}
-
-.navigation-bar li a {
-    color: black;
     text-align: center;
-    text-decoration: none;
-    padding: 0px 15px;
-    display: inline-block;
+    margin: 100px auto auto auto;
+    padding: 50px 10px 50px 10px;
+    box-shadow: 3px 3px 3px #3E3E3E;
+    border-radius: 10px;
 }
 
-.navigation-bar li a:hover {
-    background-color: #DEDEDE;
+.login-signup-label {
+    font-size: 24px;
+    display: block;
+    padding-bottom: 40px;
 }
 
-/* Pool Browser Page ================================================================================================ */
+.login-signup-input {
+    width: 70%;
+    margin-bottom: 10px;
+}
+
+.login-signup-input.mini {
+    width: 33.5%;
+}
+
+.login-signup-button {
+    background-image: linear-gradient(to right, #000428, #004E92);
+    width: 72%;
+}
+
+.page-switch-span {
+    color: grey;
+    display: block;
+    margin-top: 25px;
+}
+
+
+
+/* === DASHBOARD SETTINGS === */
+
+
+
+/* === POOL BROWSER SETTINGS  === */
 .inner-container.center-aligned {
     text-align: center;
 }
 
-.pool-browser-title-span {
+.category-span {
+    font-size: 24px;
+}
+
+.category-select {
+    width: 175px;
+    margin-top: 10px;
+}
+
+.pool-table {
+    width: 100%;
+}
+
+.pool-name-span {
     font-size: 48px;
-    display: inline-block;
 }
 
-.pool-browser-choose-category-span {
-    font-size: 28px;
-    display: inline-block;
-    padding-top: 10px;
-    padding-bottom: 10px;
+.pool-category-span {
+    font-size 18px;
 }
 
-.pool-browser-pool-name-span {
-    font-size: 48px;
-}
-
-.pool-browser-pool-category-span {
-    font-size: 18px;
-}
-
-.name-and-category-container {
-    display: inline-block;
-}
-
-.pool-browser-pool-amount-span {
+.pool-amount-span {
     font-size: 60px;
     color: green;
-    display: inline-block;
-    float: right;
 }
 
-.right-aligned-button.margin-left {
+.pool-button {
+    float: right;
     margin-left: 10px;
 }
 
-/* Account Page ===================================================================================================== */
+
+
+/* === ACCOUNT MANAGEMENT SETTINGS === */
 .edit-user-info-span {
     font-size: 18px;
     padding-right: 20px;
@@ -194,7 +264,9 @@ option:nth-child(even) {
     padding-bottom: 10px;
 }
 
-/* Bank Admin Page ================================================================================================== */
+
+
+/* === BANK MANAGEMENT SETTINGS === */
 .right-aligned-button.approve {
     background-color: #0B530D;
 }
@@ -242,45 +314,30 @@ option:nth-child(even) {
     padding: 5px;
 }
 
-/* Login Page ======================================================================================================= */
-.inner-container.mini {
-    width: 30%;
-    background-color: #F9F9F9;
-    text-align: center;
-    margin: 100px auto auto auto;
-    padding: 50px 10px 50px 10px;
-    box-shadow: 3px 3px 3px #3E3E3E;
-    border-radius: 10px;
-}
 
-.login-signup-label {
-    font-size: 24px;
-    display: block;
-    padding-bottom: 40px;
-}
 
-.login-signup-input {
-    width: 70%;
-}
-
-.login-signup-input.mini {
-    width: 33.5%;
-}
-
-.login-signup-button {
-    background-image: linear-gradient(to right, #000428, #004E92);
-    width: 72%;
-}
-
-.page-switch-span {
-    color: grey;
-    display: block;
-    margin-top: 25px;
-}
-
-/* Request/Contribute Forms ========================================================================================= */
+/* === REQUEST/CONTRIBUTE FORM SETTINGS === */
 .inner-container.form {
     width: 50%;
     margin-top: 100px;
+}
+
+
+
+/* === LOAN APPROVAL FORM SETTINGS ===*/
+.loan-info-table {
+    width: 100%;
+}
+.loan-info-table th {
+    text-align: left;
+    padding-right: 30px;
+}
+.loan-info-table td {
+    padding: 10px 30px 30px 0px;
+}
+
+.interest-rate-input {
+    width: 200px;
+    margin-bottom: 0px;
 }
 

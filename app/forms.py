@@ -1,10 +1,12 @@
 import random
+import time
+from datetime import date
 
 from flask import Blueprint, request, url_for, redirect, flash, session
 import re
 import bcrypt
 
-from models import db, User, BankAccount, Pool, PoolContribution, LoanRequest
+from models import db, User, BankAccount, Pool, PoolContribution, LoanRequest, Loan
 
 # Register the blueprint for this file
 form = Blueprint('form', __name__)
@@ -235,7 +237,8 @@ def create_new_bank_account():
     db.session.commit()
 
     # Return to the account management page with a message of success
-    success_message = "Bank account created! - " + bank_account.account_name + " [" + str(bank_account.account_number) + "]"
+    success_message = "Bank account created! - " + bank_account.account_name + " [" + str(
+        bank_account.account_number) + "]"
     flash(success_message, "create_new_bank_account_success")
     return redirect(url_for("main.account"))
 
@@ -268,7 +271,7 @@ def add_funds_to_bank_account():
     f_funds_to_add = "${:,.2f}".format(funds_to_add)
     f_account_balance = "${:,.2f}".format(bank_account.balance)
     success_message = "You have added " + f_funds_to_add + " to " + bank_account.account_name + " [" + \
-                     str(bank_account.account_number) + "]. It's balance is now " + f_account_balance + "!"
+                      str(bank_account.account_number) + "]. It's balance is now " + f_account_balance + "!"
 
     flash(success_message, "add_funds_success")
     return redirect(url_for("main.account"))
@@ -370,16 +373,52 @@ def create_new_loan_pool():
     db.session.commit()
 
     # Return with a message of success
-    success_message = "You have created " + pool.name + " [" + pool.category + "] with a starting amount of " + "${:,.2f}".format(pool.amount)
+    success_message = "You have created " + pool.name + " [" + pool.category + "] with a starting amount of " + "${:,.2f}".format(
+        pool.amount)
     flash(success_message, "create_new_pool_success")
     return redirect(url_for("main.bank_management"))
 
 
 # Bank Management // Approve loan request
 # -
-@form.route("/approve_loan_request", methods=["POST"])
+@form.route("/approve_loan_request", methods=["GET", "POST"])
 def approve_loan_request():
-    return "."
+    # Fetch the user's model from the database
+    user = User.query.filter_by(id=session["user_id"]).first()
+
+    # Get the loan request id from the hidden input and use it to fetch the loan request model from the database
+    loan_request_id = request.form.get("loan_request_id")
+    loan_request = LoanRequest.query.filter_by(id=loan_request_id).first()
+
+    # Get the pool id from the hidden input and use it to fetch the loan request model from the database
+    pool_id = request.form.get("pool_id")
+    pool = Pool.query.filter_by(id=pool_id).first()
+
+    # Get the interest rate and due date from the input boxes
+    interest_rate = request.form.get("interest_rate_input")
+    due_date = request.form.get("due_date_input")
+
+    # Convert the due date into an array and use the elements of the array to determine the unix time equivalent
+    due_date_arr = due_date.split("-")
+    d = date(int(due_date_arr[0]), int(due_date_arr[1]), int(due_date_arr[2]))
+    due_date = time.mktime(d.timetuple())
+
+    # Subtract the amount being loaned from the loan pool
+    pool.amount -= loan_request.amount
+
+    # Create the loan model, add it to the database session, delete the loan request from the database, and save
+    # changes to the database
+    loan = Loan(user.id, loan_request.amount, loan_request.amount, due_date, interest_rate)
+    db.session.add(loan)
+    db.session.delete(loan_request)
+    db.session.commit()
+
+    # Send a success message to the user
+    success_message = "Loan Approved!"
+    flash(success_message, "approve_loan_request_success")
+
+    # Return the the bank management page
+    return redirect(url_for("main.bank_management"))
 
 
 # Bank Management // Deny loan request
